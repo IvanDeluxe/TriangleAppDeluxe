@@ -1,5 +1,6 @@
 package net.ivan.triangleappdeluxe;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,11 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         ViewPager mViewPager = findViewById(R.id.container);
@@ -80,20 +85,26 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public void passToFragment(Object o) {
+        mSectionsPagerAdapter.passToHistoryFragment(o);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        //private TriangleFragment triangleFragment;
+        private HistoryFragment historyFragment;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            switch(position) {
+            switch (position) {
                 case 0:
                     return TriangleFragment.newInstance();
                 case 1:
@@ -107,6 +118,29 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             // Show 2 total pages.
             return 2;
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+
+            switch (position) {
+                case 0:
+                    //triangleFragment = (TriangleFragment) createdFragment;
+                    break;
+                case 1:
+                    historyFragment = (HistoryFragment) createdFragment;
+                    break;
+            }
+
+            return createdFragment;
+        }
+
+        void passToHistoryFragment(Object o) {
+            if (historyFragment != null) {
+                historyFragment.passToAdapter(o);
+            }
         }
     }
 }

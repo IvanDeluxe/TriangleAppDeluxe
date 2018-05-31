@@ -1,6 +1,7 @@
 package net.ivan.triangleappdeluxe;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ public class TriangleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_triangle, container, false);
 
@@ -51,7 +52,7 @@ public class TriangleFragment extends Fragment {
 
                     resultText.setText(String.valueOf(t.area));
 
-                    TriangleList.addItem(t);
+                    passToActivity(t);
                 }
                 else {
                     resultText.setText(R.string.triangle_error);
@@ -72,5 +73,11 @@ public class TriangleFragment extends Fragment {
         }
 
         return d;
+    }
+
+    public void passToActivity(Object o) {
+        if(getActivity() != null) {
+            ((MainActivity) getActivity()).passToFragment(o);
+        }
     }
 }

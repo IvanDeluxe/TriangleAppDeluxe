@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class TriangleData {
     private SharedPreferences preferences;
 
-    public TriangleData(Context appContext) {
+    TriangleData(Context appContext) {
         preferences = PreferenceManager.getDefaultSharedPreferences(appContext);
     }
 
@@ -44,7 +44,7 @@ public class TriangleData {
      * @return ArrayList of String
      */
     private ArrayList<String> getListString(String key) {
-        return new ArrayList<String>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
+        return new ArrayList<>(Arrays.asList(TextUtils.split(preferences.getString(key, ""), "‚‗‚")));
     }
 
 
